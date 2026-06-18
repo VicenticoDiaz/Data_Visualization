@@ -213,7 +213,11 @@ with t2:
     df_def = df_def.sort_values('indice_malo', ascending=False)
     
     import plotly.colors as pcolors
-    colors = pcolors.sample_colorscale('RdYlGn_r', [i/(len(df_def)-1) for i in range(len(df_def))])
+    if len(df_def) > 1:
+        color_vals = [i/(len(df_def)-1) for i in range(len(df_def))]
+    else:
+        color_vals = [0.5]
+    colors = pcolors.sample_colorscale('RdYlGn_r', color_vals)
     
     for i, (idx, row) in enumerate(df_def.iterrows()):
         fig_par.add_trace(go.Scatter(
