@@ -174,7 +174,7 @@ with t1:
         df_sc = df_scatter
         c_by = 'comuna_name'
 
-    fig_sc = px.scatter(df_sc, x='indice_envejecimiento', y='Tasa_No_Habitual', size='Total_Viviendas', color=c_by, hover_name=c_by, title="Impacto demográfico")
+    fig_sc = px.scatter(df_sc, x='indice_envejecimiento', y='Tasa_No_Habitual', size='Total_Viviendas', color=c_by, hover_name=c_by, title="Impacto demográfico", labels={'region_name': 'Regiones', 'comuna_name': 'Comunas'})
     fig_sc.update_layout(**LAYOUT_BASE)
     fig_sc.update_layout(title_text=titulo("Envejecimiento vs viviendas sin uso principal", "Censo 2024"), xaxis=dict(title="Índice de envejecimiento"), yaxis=dict(title="% Viviendas (vacaciones + desocupadas)"))
     st.plotly_chart(fig_sc, use_container_width=True)
@@ -193,7 +193,6 @@ with t2:
         sc3.metric("Hogares sin red eléctrica", f"{df_filtrado['Deficit_Elect'].sum():,.0f}".replace(',','.'))
 
     # Parallel Coordinates (Radar Alternativo Mejorado)
-    st.info("💡 **Cómo leer este gráfico:** Cada línea de color representa una región. Muestra el porcentaje de hogares con déficit en cada categoría. Las líneas más rojas indican regiones con mayor privación general (poliprecariedad), mientras que las azules/verdes indican mejores condiciones.")
     df_def = df_filtrado.groupby('region_name', observed=True)[['Deficit_Agua', 'Deficit_Saneamiento', 'Deficit_Elect', 'Viviendas_Precarias', 'Viviendas_Ocup_Presentes']].sum().reset_index()
     df_def['% Agua'] = df_def['Deficit_Agua'] / df_def['Viviendas_Ocup_Presentes'] * 100
     df_def['% San.'] = df_def['Deficit_Saneamiento'] / df_def['Viviendas_Ocup_Presentes'] * 100
@@ -204,19 +203,37 @@ with t2:
     # Índice de poliprecariedad para el color
     df_def['indice_malo'] = df_def['% Agua'] + df_def['% San.'] + df_def['% Elect.'] + df_def['% Material']
     
-    fig_par = go.Figure(data=go.Parcoords(
-        line = dict(color=df_def['indice_malo'], colorscale='RdYlGn', reversescale=True, showscale=True, colorbar=dict(title="Nivel de privación")),
-        labelfont=dict(size=13, color=COLORS['azul']), tickfont=dict(size=11, color=COLORS['neutro']),
-        dimensions = list([
-            dict(range=[0, len(df_def)-1], tickvals=df_def['region_id'], ticktext=df_def['region_name'], label='Región'),
-            dict(range=[0, df_def['% Agua'].max()], label='% Déficit agua', values=df_def['% Agua']),
-            dict(range=[0, df_def['% San.'].max()], label='% Déficit saneamiento', values=df_def['% San.']),
-            dict(range=[0, df_def['% Elect.'].max()], label='% Déficit electricidad', values=df_def['% Elect.']),
-            dict(range=[0, df_def['% Material'].max()], label='% Materialidad', values=df_def['% Material'])
-        ])
-    ))
+    # Reemplazar Parcoords por Scatter (Lineas) para permitir Tooltips y Leyenda
+    fig_par = go.Figure()
+    
+    # Categorías del eje X
+    categorias = ['% Agua', '% San.', '% Elect.', '% Material']
+    
+    # Ordenar regiones por el índice malo para que la leyenda y colores tengan sentido
+    df_def = df_def.sort_values('indice_malo', ascending=False)
+    
+    import plotly.colors as pcolors
+    colors = pcolors.sample_colorscale('RdYlGn_r', [i/(len(df_def)-1) for i in range(len(df_def))])
+    
+    for i, (idx, row) in enumerate(df_def.iterrows()):
+        fig_par.add_trace(go.Scatter(
+            x=categorias,
+            y=[row['% Agua'], row['% San.'], row['% Elect.'], row['% Material']],
+            mode='lines+markers',
+            name=row['region_name'],
+            line=dict(width=3, color=colors[i]),
+            marker=dict(size=8),
+            hovertemplate="<b>" + row['region_name'] + "</b><br>%{x}: %{y:.2f}%<extra></extra>"
+        ))
+        
     fig_par.update_layout(**LAYOUT_BASE)
-    fig_par.update_layout(title_text=titulo("Perfil multidimensional de precariedad", "Porcentaje de viviendas con carencias por región | Censo 2024"), margin=dict(t=150))
+    fig_par.update_layout(
+        title_text=titulo("Perfil multidimensional de precariedad", "Porcentaje de viviendas con carencias por región | Censo 2024"),
+        yaxis=dict(title="Porcentaje de hogares (%)", showgrid=True),
+        xaxis=dict(title="", showgrid=False),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5, font=dict(size=12)),
+        margin=dict(t=120, b=100)
+    )
     st.plotly_chart(fig_par, use_container_width=True)
 
     st.markdown("<hr>", unsafe_allow_html=True)
@@ -262,10 +279,19 @@ with t3:
     
     with st.expander("📌 Resumen estructural (a nivel país)", expanded=True):
         st.write("La jerarquía de distribución del parque habitacional nos indica las prioridades estructurales.")
+        
+        df_sb = df_sunburst.copy()
+        df_sb['area_name'] = df_sb['area'].map({1: 'Urbano', 2: 'Rural'}).fillna('Desconocido')
+        
+        # KPIs globales
+        tot_urb = df_sb[df_sb['area_name'] == 'Urbano']['count'].sum()
+        tot_rur = df_sb[df_sb['area_name'] == 'Rural']['count'].sum()
+        
+        k1, k2 = st.columns(2)
+        k1.metric("Viviendas Urbanas", f"{tot_urb:,.0f}".replace(',','.'))
+        k2.metric("Viviendas Rurales", f"{tot_rur:,.0f}".replace(',','.'))
     
     # Sunburst Chart
-    df_sb = df_sunburst.copy()
-    df_sb['area_name'] = df_sb['area'].map({1: 'Urbano', 2: 'Rural'}).fillna('Desconocido')
     df_sb['tipo_name'] = df_sb['p2_tipo_vivienda'].map(TIPO_VIV_NAMES).fillna('Desconocido')
     df_sb['ocupa_name'] = df_sb['p3b_estado_ocupacion'].map({1:'Ocupada', 2:'Ocupada (ausente)', 8:'Vacaciones', 6:'Venta', 7:'Arriendo', 9:'Abandonada', 10:'Otro'}).fillna('Otro')
     
