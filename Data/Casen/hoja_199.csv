@@ -1,0 +1,24 @@
+Indice,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10
+Déficit Cuantitativo (2006-2024),,,,,,,,,,
+"(Total, viviendas requeridas)",,,,,,,,,,
+,,,,,,,,,,
+Estimación,,,,,,,,,,
+Categoría,Desagregación,2006.0,2009.0,2011.0,2013.0,2015.0,2017.0,2020.0,2022.0,2024.0
+def_cuantitativo,Nacional,544260.0,537282.0,606174.0,560405.0,480982.0,613673.0,574323.0,552046.0,405552.0
+,,,,,,,,,,
+,,,,,,,,,,
+Error estándar,,,,,,,,,,
+Categoría,Desagregación,2006.0,2009.0,2011.0,2013.0,2015.0,2017.0,2020.0,2022.0,2024.0
+def_cuantitativo,Nacional,13066.0,15005.0,26447.0,24417.0,13915.0,21855.0,16366.0,17432.0,10918.0
+,,,,,,,,,,
+,,,,,,,,,,
+Población expandida,,,,,,,,,,
+Categoría,Desagregación,2006.0,2009.0,2011.0,2013.0,2015.0,2017.0,2020.0,2022.0,2024.0
+def_cuantitativo,Nacional,4431116.0,4785262.0,5097894.0,5420697.0,5640904.0,5997742.0,6635271.0,6998093.0,7143171.0
+,,,,,,,,,,
+,,,,,,,,,,
+Casos muestrales,,,,,,,,,,
+Categoría,Desagregación,2006.0,2009.0,2011.0,2013.0,2015.0,2017.0,2020.0,2022.0,2024.0
+def_cuantitativo,Nacional,73658.0,71460.0,59084.0,66725.0,83887.0,70948.0,62911.0,72056.0,78654.0
+,,,,,,,,,,
+"Fuente: Ministerio de Desarrollo Social y Familia, Encuesta Casen.",,,,,,,,,,

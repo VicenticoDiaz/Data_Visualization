@@ -1,0 +1,30 @@
+Indice,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7
+Indicador ODS de carencia en asequibilidad (2011-2024),,,,,,,
+"(Porcentaje, hogares)",,,,,,,
+,,,,,,,
+Estimación,,,,,,,
+Categoría,Desagregación,2011.0,2013.0,2015.0,2017.0,2022.0,2024.0
+Asequible,Nacional,93.1449928146799,93.195985682284,92.1346649402294,90.1697838953393,86.3364919557371,86.9198987396494
+No asequible,Nacional,6.85500718532006,6.80401431771597,7.86533505977056,9.83021610466072,13.6635080442629,13.0801012603506
+,,,,,,,
+,,,,,,,
+Error estándar,,,,,,,
+Categoría,Desagregación,2011.0,2013.0,2015.0,2017.0,2022.0,2024.0
+Asequible,Nacional,0.285962226031011,0.296264222074372,0.24488949483314,0.280453632234409,0.234745088619914,0.185226259524491
+No asequible,Nacional,0.285962226031011,0.296264222074372,0.24488949483314,0.280453632234409,0.234745088619914,0.185226259524491
+,,,,,,,
+,,,,,,,
+Población expandida,,,,,,,
+Categoría,Desagregación,2011.0,2013.0,2015.0,2017.0,2022.0,2024.0
+Asequible,Nacional,4748433.0,5051872.0,5197228.0,5408151.0,6041908.0,6208837.0
+No asequible,Nacional,349461.0,368825.0,443676.0,589591.0,956185.0,934334.0
+,,,,,,,
+,,,,,,,
+Casos muestrales,,,,,,,
+Categoría,Desagregación,2011.0,2013.0,2015.0,2017.0,2022.0,2024.0
+Asequible,Nacional,55802.0,62909.0,78920.0,65427.0,64569.0,70070.0
+No asequible,Nacional,3282.0,3816.0,4967.0,5521.0,7487.0,8584.0
+,,,,,,,
+Notas:,,,,,,,
+a. La serie no cuenta con el valor correspondiente al año 2020 debido a que hubo restricciones para levantar las variables necesarias para su estimación en la encuesta Casen en Pandemia 2020.,,,,,,,
+"Fuente: Ministerio de Desarrollo Social y Familia, Encuesta Casen.",,,,,,,
